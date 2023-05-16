@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float dirX;
     private bool isRight;
     private bool flip;
+    public bool cameraoffsetisRight = true;
 
     private enum Movements { idle, walking, kicking, punching, running };
 
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
             newrotation = Quaternion.Euler(0.0f, 90f, 0.0f);
             transform.localRotation = newrotation;
             state = Movements.walking;
-
+            cameraoffsetisRight = true;
 
 
         }
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
             newrotation = Quaternion.Euler(0.0f, -90f, 0.0f);
             transform.localRotation = newrotation;
             state = Movements.walking;
+            cameraoffsetisRight = false;
 
         }
         else
