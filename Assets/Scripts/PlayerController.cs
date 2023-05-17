@@ -12,9 +12,12 @@ public class PlayerController : MonoBehaviour
     private float dirX;
     private bool isRight;
     private bool flip;
-    public bool cameraoffsetisRight = true;
+    public bool cameraoffsetisRight ;
+    private float velocity = 1.5f;
+    public float speed = 1.5f;
+    public float accelerate = 0.1f;
 
-    private enum Movements { idle, walking, kicking, punching, running };
+    private enum Movements { idle,  kicking, punching, walking };
 
     // Start is called before the first frame update
     void Start()
@@ -35,29 +38,35 @@ public class PlayerController : MonoBehaviour
         Quaternion newrotation = transform.localRotation;
 
         dirX = Input.GetAxisRaw("Horizontal");
-        playerRb.velocity = new Vector3(dirX * 1.5f, playerRb.velocity.y, playerRb.velocity.z);
+        playerRb.velocity = new Vector3(dirX * speed, playerRb.velocity.y, playerRb.velocity.z);
+        
         if (dirX > 0)
         {
 
             newrotation = Quaternion.Euler(0.0f, 90f, 0.0f);
             transform.localRotation = newrotation;
-            state = Movements.walking;
-            cameraoffsetisRight = true;
+            velocity += Time.deltaTime * accelerate;
+           state = Movements.walking;
+           
+            cameraoffsetisRight = false;
 
 
         }
-        else if (dirX < 0)
+        else if (dirX < -0.5)
         {
             newrotation = Quaternion.Euler(0.0f, -90f, 0.0f);
             transform.localRotation = newrotation;
             state = Movements.walking;
-            cameraoffsetisRight = false;
+            velocity += Time.deltaTime * accelerate;
+            cameraoffsetisRight = true;
 
         }
         else
         {
             state = Movements.idle;
+            velocity = 1.5f;
         }
+        speed = velocity * 4;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -69,7 +78,9 @@ public class PlayerController : MonoBehaviour
         }
 
         anim.SetInteger("state", (int)state);
-        Debug.Log((int)state);
+        anim.SetFloat("Velocity", velocity); 
+        Debug.Log(dirX);
+        Debug.Log(velocity);
     }
 
 }

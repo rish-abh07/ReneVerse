@@ -14,6 +14,9 @@ public class PlayerFollower : MonoBehaviour
     void Start()
     {
         controller = player.GetComponent<PlayerController>();
+
+        transform.position = player.transform.position - new Vector3(-5, -1.7f, 5);
+        
     }
 
     // Update is called once per frame
@@ -21,13 +24,16 @@ public class PlayerFollower : MonoBehaviour
     {
         if (controller.cameraoffsetisRight)
         {
-            offset = new Vector3(offsetX, offsetY, offsetZ);
+            offset = new Vector3(-offsetX, offsetY, offsetZ);
             transform.position = player.transform.position - offset;
+            
+           
         }
         else
         {
-            offset = new Vector3(-offsetX, offsetY, offsetZ);
+            offset = new Vector3(offsetX, offsetY, offsetZ);
             transform.position = player.transform.position - offset;
+            
         }
     }
 }
