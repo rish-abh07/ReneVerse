@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
     private float velocity = 1.5f;
     public float speed = 1.5f;
     public float accelerate = 0.1f;
+    public int maxHealth = 100;
+    public int currentHealth;
+    public GameObject HealthbarGO;
+
+    private  HealthBar healthbar;
 
     private enum Movements { idle,  kicking, punching, walking };
 
@@ -24,6 +29,9 @@ public class PlayerController : MonoBehaviour
     {
         anim = Player.GetComponent<Animator>();
         playerRb = Player.GetComponent<Rigidbody>();
+        currentHealth = maxHealth;
+        healthbar = HealthbarGO.GetComponent<HealthBar>();
+        healthbar.Maxhealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -76,11 +84,22 @@ public class PlayerController : MonoBehaviour
         {
             state = Movements.punching;
         }
+        if (Input.GetKeyDown(KeyCode.RightAlt))
+        {
+            TakeDamage(20);
+        }
 
         anim.SetInteger("state", (int)state);
         anim.SetFloat("Velocity", velocity); 
         Debug.Log(dirX);
         Debug.Log(velocity);
     }
+    //dealing with the damage of player 
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthbar.SetHealth(currentHealth);
+    }
+
 
 }
